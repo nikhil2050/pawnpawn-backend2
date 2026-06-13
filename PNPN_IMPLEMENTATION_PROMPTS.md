@@ -107,15 +107,15 @@ Implement in pnpn-user-service:
 Output: User.java + UserRepository.java ready for data access.
 ```
 
-**Prompt 1.8: JWT Utility & Security Config**
+**Prompt 1.8: JWT Utility & Security Config ✅**
 ```
 Implement in pnpn-user-service:
-- JwtUtil: generateAccessToken (15 min expiry), parseToken, getUserIdFromToken, 
-  getUserTypeFromToken, isTokenExpired
-- JwtAuthenticationFilter: extract token from Authorization header, 
-  validate, set SecurityContext
-- SecurityConfig: @EnableWebSecurity, filter chain, BCryptPasswordEncoder, 
-  permit /api/auth/*, require auth for others
+- JwtUtil: 
+      generateAccessToken (15 min expiry), parseToken, getUserIdFromToken, getUserTypeFromToken, isTokenExpired
+- JwtAuthenticationFilter: 
+      extract token from Authorization header, validate, set SecurityContext
+- SecurityConfig: 
+      @EnableWebSecurity, filter chain, BCryptPasswordEncoder, permit /api/auth/*, require auth for others
 
 Use JJWT library (io.jsonwebtoken:jjwt).
 

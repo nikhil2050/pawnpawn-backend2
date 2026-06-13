@@ -1,0 +1,254 @@
+{
+  "info": {
+    "_postman_id": "5bc7a5ec-5fd5-45c7-8974-4cbbc347cbc4",
+    "name": "PnPn",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "9949283"
+  },
+  "item": [
+    {
+      "name": "pawnpawn-backend2",
+      "item": [
+        {
+          "name": "1.pnpn-user-service",
+          "item": [
+            {
+              "name": "Health",
+              "request": {
+                "auth": {
+                  "type": "noauth"
+                },
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "http://localhost:9091/actuator/health",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "9091",
+                  "path": [
+                    "actuator",
+                    "health"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "1.Register",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n\"name\": \"Alice\",\n\"email\": \"alice@example.com\",\n\"password\": \"Pass1234!\",\n\"type\": \"INFLUENCER\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:9091/api/auth/register",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "9091",
+                  "path": [
+                    "api",
+                    "auth",
+                    "register"
+                  ]
+                },
+                "description": "Generated from cURL: curl -s -X POST http://localhost:9091/api/auth/register \\\n-H \"Content-Type: application/json\" \\\n-d '{\n\"name\": \"Alice\",\n\"email\": \"alice@example.com\",\n\"password\": \"Pass1234!\",\n\"type\": \"INFLUENCER\"\n}' | jq ."
+              },
+              "response": []
+            },
+            {
+              "name": "2.LoginWithSameCredential",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n\"email\": \"alice@example.com\",\n\"password\": \"Pass1234!\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:9091/api/auth/login",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "9091",
+                  "path": [
+                    "api",
+                    "auth",
+                    "login"
+                  ]
+                },
+                "description": "Generated from cURL: curl -s -X POST http://localhost:9091/api/auth/login \\\n-H \"Content-Type: application/json\" \\\n-d '{\n\"email\": \"alice@example.com\",\n\"password\": \"Pass1234!\"\n}' | jq ."
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "2.pnpn-catalog-service",
+          "item": [
+            {
+              "name": "Health",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "auth": {
+                  "type": "noauth"
+                },
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"organizationId\": \"my-company-d4\",\n    \"level\": \"INFO\",\n    \"message\": \"User logged in successfully\",\n    \"source\": \"auth-service\"\n}"
+                },
+                "url": {
+                  "raw": "http://localhost:9092/actuator/health",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "9092",
+                  "path": [
+                    "actuator",
+                    "health"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "3.pnpn-transaction-service",
+          "item": [
+            {
+              "name": "Health",
+              "request": {
+                "auth": {
+                  "type": "noauth"
+                },
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "http://localhost:9093/actuator/health",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "9093",
+                  "path": [
+                    "actuator",
+                    "health"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "4.pnpn-messaging-service",
+          "item": [
+            {
+              "name": "Health",
+              "request": {
+                "auth": {
+                  "type": "noauth"
+                },
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "http://localhost:9094/actuator/health",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "9094",
+                  "path": [
+                    "actuator",
+                    "health"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "3.AccessProtectedEndpointWithJWT",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJlZTY4YTg5NS03N2QzLTQyYzItOGFhYi01MDU0YjhkMjM0ZjEiLCJ1c2VyVHlwZSI6IklORkxVRU5DRVIiLCJpYXQiOjE3ODEzODUwNjgsImV4cCI6MTc4MTM4NTk2OH0.6fm9bCTAiMWwPnMWpqqpDVYXIzCCEO6MqRxuNp6C2dw",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:9091/api/users/me",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "9091",
+          "path": [
+            "api",
+            "users",
+            "me"
+          ]
+        },
+        "description": "Generated from cURL: curl -s http://localhost:9091/api/users/me \\\n-H \"Authorization: Bearer $TOKEN\" | jq ."
+      },
+      "response": []
+    }
+  ]
+}
