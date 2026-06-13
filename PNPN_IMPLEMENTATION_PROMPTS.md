@@ -94,7 +94,7 @@ Output: All DTOs with proper annotations and documentation.
 
 ### Week 3-4: User Service (Auth)
 
-**Prompt 1.7: User Entity & Repository**
+**Prompt 1.7: User Entity & Repository ✅**
 ```
 Implement in pnpn-user-service:
 - User JPA entity with fields: id, type, name, email, phone, passwordHash, 
