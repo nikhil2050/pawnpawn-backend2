@@ -1,0 +1,50 @@
+server:
+  port: 9091
+
+spring:
+  application:
+    name: pnpn-user-service
+#  datasource:
+#    url: jdbc:postgresql://${DB_HOST:localhost}:5432/pnpn_db
+#    username: ${DB_USERNAME:postgres}
+#    password: ${DB_PASSWORD:postgres}
+#    driver-class-name: org.postgresql.Driver
+#    connectionTimeout: 5000
+#  jpa:
+#    hibernate:
+#      ddl-auto: update
+#    show-sql: false
+#    properties:
+#      hibernate:
+#        dialect: org.hibernate.dialect.PostgreSQLDialect
+#        format_sql: true
+#  data:
+#    redis:
+#      host: ${REDIS_HOST:redis}
+#      port: ${REDIS_PORT:6379}
+
+jwt:
+  secret: ${JWT_SECRET:default-dev-secret-key-change-in-production}
+  access-token-expiration: 900000
+  refresh-token-expiration: 604800000
+
+resilience4j:
+  circuitbreaker:
+    configs:
+      default:
+        slidingWindowSize: 10
+        minimumNumberOfCalls: 5
+        failureRateThreshold: 50
+        waitDurationInOpenState: 10s
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+    health:
+      show-details: always
+  info:
+    app:
+      name: pnpn-user-service
+      version: 1.0.0

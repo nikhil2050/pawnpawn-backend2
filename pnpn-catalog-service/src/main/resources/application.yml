@@ -1,0 +1,54 @@
+server:
+  port: 9092
+
+spring:
+  application:
+    name: pnpn-catalog-service
+#  datasource:
+#    url: jdbc:postgresql://${DB_HOST:localhost}:5432/pnpn_db
+#    username: ${DB_USERNAME:postgres}
+#    password: ${DB_PASSWORD:postgres}
+#    driver-class-name: org.postgresql.Driver
+#    connectionTimeout: 5000
+#  jpa:
+#    hibernate:
+#      ddl-auto: update
+#    show-sql: false
+#    properties:
+#      hibernate:
+#        dialect: org.hibernate.dialect.PostgreSQLDialect
+#        format_sql: true
+#  data:
+#    redis:
+#      host: ${REDIS_HOST:redis}
+#      port: ${REDIS_PORT:6379}
+
+minio:
+  url: http://${MINIO_HOST:minio}:9000
+  access-key: ${MINIO_ACCESS_KEY:minioadmin}
+  secret-key: ${MINIO_SECRET_KEY:minioadmin}
+  buckets:
+    listings-images: pnpn-listings-images
+    listings-videos: pnpn-listings-videos
+    avatars: pnpn-avatars
+
+resilience4j:
+  circuitbreaker:
+    instances:
+      user-service-cb:
+        slidingWindowSize: 10
+        minimumNumberOfCalls: 5
+        failureRateThreshold: 50
+        waitDurationInOpenState: 10s
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+    health:
+      show-details: always
+  info:
+    app:
+      name: pnpn-catalog-service
+      version: 1.0.0
