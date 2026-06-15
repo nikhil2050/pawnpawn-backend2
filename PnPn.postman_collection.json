@@ -3,7 +3,8 @@
     "_postman_id": "5bc7a5ec-5fd5-45c7-8974-4cbbc347cbc4",
     "name": "PnPn",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-    "_exporter_id": "9949283"
+    "_exporter_id": "9949283",
+    "_collection_link": "https://go.postman.co/collection/9949283-5bc7a5ec-5fd5-45c7-8974-4cbbc347cbc4?source=collection_link"
   },
   "item": [
     {
@@ -41,7 +42,7 @@
               "response": []
             },
             {
-              "name": "1.Register",
+              "name": "1./register",
               "request": {
                 "method": "POST",
                 "header": [
@@ -52,7 +53,7 @@
                 ],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n\"name\": \"Alice\",\n\"email\": \"alice@example.com\",\n\"password\": \"Pass1234!\",\n\"type\": \"INFLUENCER\"\n}",
+                  "raw": "{\n    \"name\": \"Britney\",\n    \"email\": \"britney@example.com\",\n    \"password\": \"Secure@123\",\n    \"phone\": \"+1234567892\",\n    \"type\": \"INFLUENCER\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -72,12 +73,39 @@
                     "register"
                   ]
                 },
-                "description": "Generated from cURL: curl -s -X POST http://localhost:9091/api/auth/register \\\n-H \"Content-Type: application/json\" \\\n-d '{\n\"name\": \"Alice\",\n\"email\": \"alice@example.com\",\n\"password\": \"Pass1234!\",\n\"type\": \"INFLUENCER\"\n}' | jq ."
+                "description": "Generated from cURL: curl -s -X POST http://localhost:9091/api/auth/register \\\n  -H \"Content-Type: application/json\" \\\n  -d '{\"name\":\"Alice Test\",\"email\":\"alice@example.com\",\"password\":\"Secure@123\",\"phone\":\"+1234567890\",\"type\":\"BUYER\"}'\n"
               },
               "response": []
             },
             {
-              "name": "2.LoginWithSameCredential",
+              "name": "2./login",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "// 1. Parse the JSON response body",
+                      "const responseJson = pm.response.json();",
+                      "",
+                      "// 2. Extract the token (adjust 'access_token' to match your exact JSON key)",
+                      "const accessToken = responseJson.accessToken;",
+                      "",
+                      "// 3. Save the token to your preferred variable scope:",
+                      "pm.environment.set(\"pnpn_auth_accessToken\", accessToken);         // Option A: Environment Scope (Recommended)",
+                      "// pm.collectionVariables.set(\"my_access_token\", token); // Option B: Collection Scope",
+                      "// pm.globals.set(\"my_access_token\", token);             // Option C: Global Scope",
+                      "",
+                      "pm.environment.set(\"pnpn_auth_userId\", responseJson.userId);",
+                      "pm.environment.set(\"pnpn_auth_refreshToken\", responseJson.refreshToken);",
+                      "",
+                      ""
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
               "request": {
                 "method": "POST",
                 "header": [
@@ -88,7 +116,7 @@
                 ],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n\"email\": \"alice@example.com\",\n\"password\": \"Pass1234!\"\n}",
+                  "raw": "{\n    \"email\": \"britney@example.com\",\n    \"password\": \"Secure@123\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -108,7 +136,203 @@
                     "login"
                   ]
                 },
-                "description": "Generated from cURL: curl -s -X POST http://localhost:9091/api/auth/login \\\n-H \"Content-Type: application/json\" \\\n-d '{\n\"email\": \"alice@example.com\",\n\"password\": \"Pass1234!\"\n}' | jq ."
+                "description": "Generated from cURL: curl -s -X POST http://localhost:9091/api/auth/login \\\n  -H \"Content-Type: application/json\" \\\n  -d '{\"email\":\"alice@example.com\",\"password\":\"Secure@123\"}'\n"
+              },
+              "response": []
+            },
+            {
+              "name": "3./send-otp",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "// 1. Parse the JSON response body",
+                      "const responseJson = pm.response.json();",
+                      "",
+                      "// 2. Extract the token (adjust 'access_token' to match your exact JSON key)",
+                      "const code = responseJson.code;",
+                      "",
+                      "// 3. Save the token to your preferred variable scope:",
+                      "pm.environment.set(\"pnpn_auth_otpcode\", code);         // Option A: Environment Scope (Recommended)",
+                      "// pm.collectionVariables.set(\"my_access_token\", token); // Option B: Collection Scope",
+                      "// pm.globals.set(\"my_access_token\", token);             // Option C: Global Scope",
+                      "",
+                      ""
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"email\": \"britney@example.com\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:9091/api/auth/send-otp",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "9091",
+                  "path": [
+                    "api",
+                    "auth",
+                    "send-otp"
+                  ]
+                },
+                "description": "Generated from cURL: curl -s -X POST http://localhost:9091/api/auth/send-otp \\\n  -H \"Content-Type: application/json\" \\\n  -d '{\"email\":\"alice@example.com\"}'"
+              },
+              "response": []
+            },
+            {
+              "name": "4./verify-otp",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"email\": \"britney@example.com\",\n    \"code\": {{pnpn_auth_otpcode}}\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:9091/api/auth/verify-otp",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "9091",
+                  "path": [
+                    "api",
+                    "auth",
+                    "verify-otp"
+                  ]
+                },
+                "description": "Generated from cURL: curl -s -X POST http://localhost:9091/api/auth/verify-otp \\\n  -H \"Content-Type: application/json\" \\\n  -d '{\"email\":\"britney@example.com\",\"code\":\"1234\"}'\n"
+              },
+              "response": []
+            },
+            {
+              "name": "5./refresh Token",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"userId\": \"{{pnpn_auth_userId}}\",\n    \"refreshToken\": \"{{pnpn_auth_refreshToken}}\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:9091/api/auth/refresh",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "9091",
+                  "path": [
+                    "api",
+                    "auth",
+                    "refresh"
+                  ]
+                },
+                "description": "Generated from cURL: curl -s -X POST http://localhost:9091/api/auth/refresh \\\n  -H \"Content-Type: application/json\" \\\n  -d '{\"userId\":\"<uuid-from-login>\",\"refreshToken\":\"<token-from-login>\"}'\n"
+              },
+              "response": []
+            },
+            {
+              "name": "6./logout",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"userId\": \"{{pnpn_auth_userId}}\",\n    \"refreshToken\": \"{{pnpn_auth_refreshToken}}\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:9091/api/auth/logout",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "9091",
+                  "path": [
+                    "api",
+                    "auth",
+                    "logout"
+                  ]
+                },
+                "description": "Generated from cURL: curl -s -X POST http://localhost:9091/api/auth/logout \\\n  -H \"Content-Type: application/json\" \\\n  -d '{\"userId\":\"<uuid>\",\"refreshToken\":\"<token>\"}'\n"
+              },
+              "response": []
+            },
+            {
+              "name": "7./users/me",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{pnpn_auth_accessToken}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "http://localhost:9091/api/users/me",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "9091",
+                  "path": [
+                    "api",
+                    "users",
+                    "me"
+                  ]
+                },
+                "description": "Generated from cURL: curl -s http://localhost:9091/api/users/me \\\n  -H \"Authorization: Bearer <access-token>\"\n"
               },
               "response": []
             }
@@ -221,34 +445,6 @@
           ]
         }
       ]
-    },
-    {
-      "name": "3.AccessProtectedEndpointWithJWT",
-      "request": {
-        "method": "GET",
-        "header": [
-          {
-            "key": "Authorization",
-            "value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJlZTY4YTg5NS03N2QzLTQyYzItOGFhYi01MDU0YjhkMjM0ZjEiLCJ1c2VyVHlwZSI6IklORkxVRU5DRVIiLCJpYXQiOjE3ODEzODUwNjgsImV4cCI6MTc4MTM4NTk2OH0.6fm9bCTAiMWwPnMWpqqpDVYXIzCCEO6MqRxuNp6C2dw",
-            "type": "text"
-          }
-        ],
-        "url": {
-          "raw": "http://localhost:9091/api/users/me",
-          "protocol": "http",
-          "host": [
-            "localhost"
-          ],
-          "port": "9091",
-          "path": [
-            "api",
-            "users",
-            "me"
-          ]
-        },
-        "description": "Generated from cURL: curl -s http://localhost:9091/api/users/me \\\n-H \"Authorization: Bearer $TOKEN\" | jq ."
-      },
-      "response": []
     }
   ]
 }
