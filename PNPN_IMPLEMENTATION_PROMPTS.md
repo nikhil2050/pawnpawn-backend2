@@ -141,7 +141,7 @@ Use BCryptPasswordEncoder, RedisTemplate, Optional handling.
 Output: AuthService.java with all business logic.
 ```
 
-**Prompt 1.10: Auth Controller & DTOs**
+**Prompt 1.10: Auth Controller & DTOs ✅**
 ```
 Implement in pnpn-user-service:
 - AuthController with endpoints: POST /register, /login, /refresh, /logout, 

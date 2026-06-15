@@ -56,19 +56,19 @@ AUTH'd      → JwtAuthenticationFilter.doFilterInternal()        ← EVERY requ
 ---
 
 Here are the cURL commands to test all endpoints. \
-Save as `scripts/test-endpoints.sh` and run after starting the service.
+Save as `scripts/test-auth-endpoints.sh` and run after starting the service.
 
 Prerequisites: Service running on `localhost:9091`, PostgreSQL + Redis up.
 
-```bash scripts/test-endpoints.sh```
+```bash scripts/test-auth-endpoints.sh```
 
 ## Individual cURLs
 
-### 1. Register a buyer:✅
+### 1. Register an Influencer:✅
 ```shell
 curl -s -X POST http://localhost:9091/api/auth/register \
   -H "Content-Type: application/json" \
-  -d '{"name":"Britney","email":"britney@example.com","password":"Secure@123","phone":"+1234567890","type":"BUYER"}'
+  -d '{"name":"Britney","email":"britney@example.com","password":"Secure@123","phone":"+1234567890","type":"INFLUENCER"}'
 ```
 
 ### 2. Login:✅
@@ -129,13 +129,13 @@ The script runs all 14 test cases (7 happy + 7 error) and prints status codes fo
 
 OTP Send Flow
 The OTP flow is entirely in pnpn-user-service:
-1. POST `/api/auth/send-otp` → `AuthController.java`:39 → `AuthService.java`:93
+1. POST `/api/auth/send-otp` → `AuthController.java`:41 → `AuthService.java`:94
 2. Validates user exists in PostgreSQL via `UserRepository.findByEmail()`
-3. Generates a 4-digit code using `SecureRandom` (`AuthService.java`:101)
+3. Generates a 4-digit code using `SecureRandom` (`AuthService.java`:98)
 4. Stores it in Redis with key otp:<email>, 5-minute TTL (`AuthService.java:103`)
-5. Returns the code in the HTTP response body — no external sending happens (`AuthController.java:44`)
+5. Returns the code in the HTTP response body — no external sending happens (`AuthController.java:46`)
    
-Verification: `POST /api/auth/verify-otp` → `AuthController.java`:48 → `AuthService.java`:110 — looks up Redis key, compares code, deletes on match.
+Verification: `POST /api/auth/verify-otp` → `AuthController.java`:50 → `AuthService.java`:111 — looks up Redis key, compares code, deletes on match.
 
 SMS Send Code
    There is no SMS send code. The OTP is returned directly to the client in the API response.

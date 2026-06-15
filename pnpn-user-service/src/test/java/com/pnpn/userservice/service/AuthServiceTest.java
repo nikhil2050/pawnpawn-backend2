@@ -9,10 +9,12 @@ import com.pnpn.shared.enums.UserType;
 import com.pnpn.shared.enums.VerificationStatus;
 import com.pnpn.shared.exception.PnPnException;
 import com.pnpn.userservice.config.JwtUtil;
-import com.pnpn.userservice.dto.LogoutRequest;
-import com.pnpn.userservice.dto.RefreshTokenRequest;
+import com.pnpn.shared.dto.auth.LogoutRequest;
+import com.pnpn.shared.dto.auth.RefreshTokenRequest;
+
 import com.pnpn.userservice.entity.User;
 import com.pnpn.userservice.repository.UserRepository;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

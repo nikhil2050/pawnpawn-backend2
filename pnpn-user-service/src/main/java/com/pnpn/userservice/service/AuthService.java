@@ -5,14 +5,16 @@ import com.pnpn.shared.dto.auth.LoginRequest;
 import com.pnpn.shared.dto.auth.LoginResponse;
 import com.pnpn.shared.dto.auth.OtpRequest;
 import com.pnpn.shared.dto.auth.OtpVerifyRequest;
+import com.pnpn.shared.dto.auth.LogoutRequest;
+import com.pnpn.shared.dto.auth.RefreshTokenRequest;
 import com.pnpn.shared.dto.auth.RegisterRequest;
 import com.pnpn.shared.enums.VerificationStatus;
 import com.pnpn.shared.exception.PnPnException;
+
 import com.pnpn.userservice.config.JwtUtil;
-import com.pnpn.userservice.dto.LogoutRequest;
-import com.pnpn.userservice.dto.RefreshTokenRequest;
 import com.pnpn.userservice.entity.User;
 import com.pnpn.userservice.repository.UserRepository;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.StringRedisTemplate;

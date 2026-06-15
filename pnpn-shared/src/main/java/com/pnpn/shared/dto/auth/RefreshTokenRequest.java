@@ -1,4 +1,4 @@
-package com.pnpn.userservice.dto;
+package com.pnpn.shared.dto.auth;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -13,9 +13,9 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 public class RefreshTokenRequest {
-    @NotNull
+    @NotNull(message = "User ID is required")
     private UUID userId;
 
-    @NotNull
+    @NotNull(message = "Refresh token is required")
     private String refreshToken;
 }

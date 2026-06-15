@@ -4,10 +4,12 @@ import com.pnpn.shared.dto.auth.LoginRequest;
 import com.pnpn.shared.dto.auth.LoginResponse;
 import com.pnpn.shared.dto.auth.OtpRequest;
 import com.pnpn.shared.dto.auth.OtpVerifyRequest;
+import com.pnpn.shared.dto.auth.LogoutRequest;
+import com.pnpn.shared.dto.auth.RefreshTokenRequest;
 import com.pnpn.shared.dto.auth.RegisterRequest;
-import com.pnpn.userservice.dto.LogoutRequest;
-import com.pnpn.userservice.dto.RefreshTokenRequest;
+
 import com.pnpn.userservice.service.AuthService;
+
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -57,7 +59,7 @@ public class AuthController {
     }
 
     @PostMapping("/logout")
-    public ResponseEntity<Map<String, String>> logout(@RequestBody LogoutRequest request) {
+    public ResponseEntity<Map<String, String>> logout(@Valid @RequestBody LogoutRequest request) {
         authService.logout(request);
         return ResponseEntity.ok(Map.of("message", "Logged out successfully"));
     }
