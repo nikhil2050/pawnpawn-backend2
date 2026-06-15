@@ -122,15 +122,19 @@ Use JJWT library (io.jsonwebtoken:jjwt).
 Output: Complete JWT + Spring Security setup.
 ```
 
-**Prompt 1.9: Auth Service Implementation**
+**Prompt 1.9: Auth Service Implementation ✅**
 ```
 Implement in pnpn-user-service:
-- AuthService with methods: register, login, sendOtp, verifyOtp, 
-  refreshToken, logout
-- Password validation: min 8 chars, uppercase, lowercase, digit, symbol
-- OTP generation: 4-digit random, stored in Redis with 5-min expiry
-- Refresh token: UUID, stored in Redis with 7-day expiry
-- Exceptions: email exists, invalid password, OTP expired, etc.
+- AuthService with methods: 
+      register, login, sendOtp, verifyOtp, refreshToken, logout
+- Password validation: 
+      min 8 chars, uppercase, lowercase, digit, symbol
+- OTP generation: 
+      4-digit random, stored in Redis with 5-min expiry
+- Refresh token: 
+      UUID, stored in Redis with 7-day expiry
+- Exceptions: 
+      email exists, invalid password, OTP expired, etc.
 
 Use BCryptPasswordEncoder, RedisTemplate, Optional handling.
 

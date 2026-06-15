@@ -24,116 +24,6 @@ controller/AuthController.java	POST /api/auth/register (201), POST /api/auth/log
 controller/UserController.java	GET /api/users/me — reads userId from Authentication principal
 cURL demo (start the service first: mvn spring-boot:run -pl pnpn-user-service):
 
-## 1. REGISTER a new influencer 
-```shell
-curl -s -X POST http://localhost:9091/api/auth/register \
--H "Content-Type: application/json" \
--d '{
-"name": "Alice",
-"email": "alice@example.com",
-"password": "Pass1234!",
-"type": "INFLUENCER"
-}' | jq .
-```
-```json
-# Response: 201 Created
-{
-  "userId": "550e8400-e29b-41d4-a716-446655440000",
-  "type": "INFLUENCER",
-  "accessToken": "eyJhbGciOiJIUzI1NiJ9...",   ← JWT (exp: 15 min)
-  "refreshToken": "...",
-  "expiresIn": 900000,
-  "user": { "id": "...", "name": "Alice", ... }
-}
-```
-
-## 2. LOGIN with same credentials
-```shell
-curl -s -X POST http://localhost:9091/api/auth/login \
--H "Content-Type: application/json" \
--d '{
-"email": "alice@example.com",
-"password": "Pass1234!"
-}' | jq .
-```
-```json
-Response: 200 OK
-{
-  "accessToken": "eyJhbGciOiJIUzI1NiJ9...",   ← fresh JWT
-  ...
-}
-```
-
-## 3. ACCESS PROTECTED ENDPOINT with JWT
-TOKEN="<paste-accessToken-from-step-2>"
-
-```shell
-curl -s http://localhost:9091/api/users/me \
--H "Authorization: Bearer $TOKEN" | jq .
-```
-```json
-Response: 200 OK
-{
-  "id": "550e8400-...",
-  "name": "Alice",
-  "email": "alice@example.com",
-  "type": "INFLUENCER",
-  ...
-}
-```
-
-## 4. WITHOUT TOKEN → 401
-```shell
-curl -s http://localhost:9091/api/users/me | jq .
-```
-```json
-Response: 401 Unauthorized
-{
-  "error": "Unauthorized",
-  "status": 401,
-  ...
-}
-```
-
-## 5. WITH EXPIRED / TAMPERED TOKEN → 401
-```shell
-curl -s http://localhost:9091/api/users/me \
--H "Authorization: Bearer invalid.jwt.here" | jq .
-```
-```json
-Response: 403 Forbidden
-(JWT parsing fails in filter → no auth set → security rejects)
-```
-
-## 6. REGISTER WITH DUPLICATE EMAIL → 409
-```shell
-curl -s -X POST http://localhost:9091/api/auth/register \
--H "Content-Type: application/json" \
--d '{
-"name": "Alice",
-"email": "alice@example.com",
-"password": "Pass1234!",
-"type": "INFLUENCER"
-}' | jq .
-```
-```json
-Response: 409 Conflict
-{ "message": "Email already registered", ... }
-```
-
-## 7. LOGIN WITH WRONG PASSWORD → 401
-```shell
-curl -s -X POST http://localhost:9091/api/auth/login \
--H "Content-Type: application/json" \
--d '{
-"email": "alice@example.com",
-"password": "wrongpassword"
-}' | jq .
-```
-```json
-Response: 401 Unauthorized
-{ "message": "Invalid email or password", ... }
-```
 ---
 Method call chain per request:
 ```text
@@ -162,6 +52,96 @@ AUTH'd      → JwtAuthenticationFilter.doFilterInternal()        ← EVERY requ
                 → userRepository.findById(userId)
                 → returns UserDto
 ```
+
+---
+
+Here are the cURL commands to test all endpoints. \
+Save as `scripts/test-endpoints.sh` and run after starting the service.
+
+Prerequisites: Service running on `localhost:9091`, PostgreSQL + Redis up.
+
+```bash scripts/test-endpoints.sh```
+
+## Individual cURLs
+
+### 1. Register a buyer:✅
+```shell
+curl -s -X POST http://localhost:9091/api/auth/register \
+  -H "Content-Type: application/json" \
+  -d '{"name":"Britney","email":"britney@example.com","password":"Secure@123","phone":"+1234567890","type":"BUYER"}'
+```
+
+### 2. Login:✅
+```shell
+curl -s -X POST http://localhost:9091/api/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{"email":"britney@example.com","password":"Secure@123"}'
+```
+
+### 3. Send OTP: ✅
+```shell
+curl -s -X POST http://localhost:9091/api/auth/send-otp \
+  -H "Content-Type: application/json" \
+  -d '{"email":"britney@example.com"}'
+```
+
+### 4. Verify OTP: (replace 1234 with actual code from send-otp response) ✅
+```shell
+curl -s -X POST http://localhost:9091/api/auth/verify-otp \
+  -H "Content-Type: application/json" \
+  -d '{"email":"britney@example.com","code":"1234"}'
+```
+
+### 5. Refresh token: ✅
+```shell
+curl -s -X POST http://localhost:9091/api/auth/refresh \
+  -H "Content-Type: application/json" \
+  -d '{"userId":"<uuid-from-login>","refreshToken":"<token-from-login>"}'
+```
+
+### 6. Logout: ✅
+```shell
+curl -s -X POST http://localhost:9091/api/auth/logout \
+  -H "Content-Type: application/json" \
+  -d '{"userId":"<uuid>","refreshToken":"<token>"}'
+```
+
+### 7. Get user profile (authenticated): ✅
+```shell
+curl -s http://localhost:9091/api/users/me \
+  -H "Authorization: Bearer <access-token>"
+```
+
+### Error cases:
+| Expect | Command                                              | Working |
+|--------|------------------------------------------------------|---------|
+| 400    | Register with empty name, bad email, weak password   | ✅       |
+| 401    | Login with wrong password                            | ✅       |
+| 409    | Register with same email again                       | ✅       |
+| 404    | Send OTP to unknown email                            | ✅       |
+| 401    | Verify OTP with wrong code "0000"                    | ✅       |
+| 401    | Refresh with invalid token                           | ✅       |
+| 401    | GET /api/users/me without Authorization header       | ✅       |
+
+The script runs all 14 test cases (7 happy + 7 error) and prints status codes for each.
+
+---
+
+OTP Send Flow
+The OTP flow is entirely in pnpn-user-service:
+1. POST `/api/auth/send-otp` → `AuthController.java`:39 → `AuthService.java`:93
+2. Validates user exists in PostgreSQL via `UserRepository.findByEmail()`
+3. Generates a 4-digit code using `SecureRandom` (`AuthService.java`:101)
+4. Stores it in Redis with key otp:<email>, 5-minute TTL (`AuthService.java:103`)
+5. Returns the code in the HTTP response body — no external sending happens (`AuthController.java:44`)
+   
+Verification: `POST /api/auth/verify-otp` → `AuthController.java`:48 → `AuthService.java`:110 — looks up Redis key, compares code, deletes on match.
+
+SMS Send Code
+   There is no SMS send code. The OTP is returned directly to the client in the API response.
+   pnpn-messaging-service/ is a skeleton — only a main() method, no controllers or services. 
+   No Twilio, AWS SNS, or any SMS provider dependency exists anywhere in the project. 
+   The User entity has a phone field and UserRepository has findByPhone(), but they are unused by the OTP flow (which only uses email).
 
 ---
 **Key details:**

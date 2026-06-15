@@ -17,7 +17,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/api/users")
 @RequiredArgsConstructor
-public class SampleUserController {
+public class UserController {
 
     private final UserRepository userRepository;
 

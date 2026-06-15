@@ -9,3 +9,4 @@ Fetch ENUM values:
 
 mvn clean test -pl pnpn-shared
 mvn test -pl pnpn-user-service -Dtest="UserEntityTest,UserRepositoryTest" -Dsurefire.failIfNoSpecifiedTests=false -am -q 2>&1
+mvn test -pl pnpn-user-service -am 2>&1 | grep -E "Tests run:|BUILD|Failures:|Errors:|FAILURE|Caused by:"
