@@ -155,12 +155,15 @@ Implement in pnpn-user-service:
 Output: AuthController.java + DTO classes.
 ```
 
-**Prompt 1.11: User Profile Service**
+**Prompt 1.11: User Profile Service ✅**
 ```
 Implement in pnpn-user-service:
-- UserService: getUserById, updateProfile, getReputation, getFollowerCount
-- Methods to update: name, bio, profilePicUrl, verificationStatus
-- Calculate reputation from reviews: average rating, total count
+- UserService:
+        getUserById, updateProfile, getReputation, getFollowerCount
+- Methods to update:
+        name, bio, profilePicUrl, verificationStatus
+- Calculate reputation from reviews:
+        average rating, total count
 - Add circuit breaker (user-service-cb) for fallback scenarios
 
 Output: UserService.java with profile management.
