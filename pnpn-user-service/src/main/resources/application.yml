@@ -36,6 +36,9 @@ resilience4j:
         minimumNumberOfCalls: 5
         failureRateThreshold: 50
         waitDurationInOpenState: 10s
+    instances:
+      user-service-cb:
+        baseConfig: default
 
 management:
   endpoints:
