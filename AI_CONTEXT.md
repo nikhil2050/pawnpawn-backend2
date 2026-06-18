@@ -29,10 +29,10 @@
 |----------------------------|------|-----------------------|--------------------------------------------------------------------------------|
 | `pnpn-gateway`             | 9090 | Minimal               | API routing, rate limiting, circuit breaker, JWT validation, fallback          |
 | `pnpn-user-service`        | 9091 | Fully implemented     | Register/login/OTP/refresh/logout, user profiles, JWT issuing                  |
-| `pnpn-catalog-service`     | 9092 | Partially implemented | Listings CRUD, dynamic search, auctions, bidding, MinIO media                  |
+| `pnpn-catalog-service`     | 9092 | Partially implemented | Listings CRUD service, dynamic search, MinIO presigned URLs, auctions, bidding  |
 | `pnpn-transaction-service` | 9093 | Skeleton only         | Orders lifecycle, cart management, payments (Razorpay/Stripe), reviews, resale |
 | `pnpn-messaging-service`   | 9094 | Skeleton only         | Real-time chat (WebSocket), notifications (FCM)                                |
-| `pnpn-shared`              | —    | Fully implemented     | Shared DTOs (39), enums (8), exceptions (2), global handler                    |
+| `pnpn-shared`              | —    | Fully implemented     | Shared DTOs (40), enums (8), exceptions (2), global handler                    |
 
 ## Database Architecture
 
@@ -63,7 +63,7 @@
 
 Every service depends on `pnpn-shared`. Key DTO domain groups:
 - `shared.dto.auth.*` — RegisterRequest, LoginRequest, LoginResponse, OtpRequest, OtpVerifyRequest, RefreshTokenRequest, LogoutRequest
-- `shared.dto.catalog.*` — CreateListingRequest, ListingSearchCriteria, CreateAuctionRequest, PlaceBidRequest, AuctionDetailResponse, MediaPresignedUrlResponse
+- `shared.dto.catalog.*` — CreateListingRequest, ListingSearchCriteria, CreateAuctionRequest, PlaceBidRequest, AuctionDetailResponse, MediaPresignedUrlResponse, ListingResponse
 - `shared.dto.transaction.*` — AddToCartRequest, CheckoutRequest, OrderDetailResponse, CreatePaymentRequest, VerifyPaymentRequest, CreateReviewRequest, CreateResaleRequest
 - `shared.dto.messaging.*` — StartChatRequest, ChatRoomResponse, ChatMessageResponse, NotificationResponse
 - `shared.dto.*` — UserDto, ListingDto, AuctionDto, BidDto, OrderDto, ReviewDto, ErrorResponse, UpdateProfileRequest

@@ -4,24 +4,24 @@ server:
 spring:
   application:
     name: pnpn-catalog-service
-#  datasource:
-#    url: jdbc:postgresql://${DB_HOST:localhost}:5432/pnpn_db
-#    username: ${DB_USERNAME:postgres}
-#    password: ${DB_PASSWORD:postgres}
-#    driver-class-name: org.postgresql.Driver
-#    connectionTimeout: 5000
-#  jpa:
-#    hibernate:
-#      ddl-auto: update
-#    show-sql: false
-#    properties:
-#      hibernate:
-#        dialect: org.hibernate.dialect.PostgreSQLDialect
-#        format_sql: true
-#  data:
-#    redis:
-#      host: ${REDIS_HOST:redis}
-#      port: ${REDIS_PORT:6379}
+  datasource:
+    url: jdbc:postgresql://${DB_HOST:localhost}:5432/pnpn_db
+    username: ${DB_USERNAME:postgres}
+    password: ${DB_PASSWORD:postgres}
+    driver-class-name: org.postgresql.Driver
+    connectionTimeout: 5000
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+  data:
+    redis:
+      host: ${REDIS_HOST:redis}
+      port: ${REDIS_PORT:6379}
 
 minio:
   url: http://${MINIO_HOST:minio}:9000
@@ -30,6 +30,7 @@ minio:
   buckets:
     listings-images: pnpn-listings-images
     listings-videos: pnpn-listings-videos
+    reviews-images: pnpn-reviews-images
     avatars: pnpn-avatars
 
 resilience4j:

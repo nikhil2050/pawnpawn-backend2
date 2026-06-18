@@ -173,42 +173,49 @@ Output: UserService.java with profile management.
 
 ### Week 4-5: Catalog Service (Listings)
 
-**Prompt 1.12: Listing Entity & Repository**
+**Prompt 1.12: Listing Entity & Repository ✅**
 ```
 Implement in pnpn-catalog-service:
-- Listing JPA entity: id, influencerId, title, description, price, category, 
-  condition, status, mediaUrls (TEXT[]), viewCount, createdAt, updatedAt
-- ListingRepository: findByInfluencerId, findByStatus, findByCategory, 
-  findByCondition, findByPriceBetween
-- CustomListingRepository: findByCriteria (dynamic query with filters)
+- Listing JPA entity: 
+    id, influencerId, title, description, price, category, condition, status, mediaUrls (TEXT[]), viewCount, createdAt, updatedAt
+- ListingRepository: 
+    findByInfluencerId, findByStatus, findByCategory, findByCondition, findByPriceBetween
+- CustomListingRepository: 
+    findByCriteria (dynamic query with filters)
 - Implement ListingRepositoryImpl using CriteriaBuilder
 
 Output: Listing.java + repositories with dynamic filtering.
 ```
 
-**Prompt 1.13: MinIO Configuration**
+**Prompt 1.13: MinIO Configuration ✅**
 ```
 Implement in pnpn-catalog-service:
-- MinioConfig: MinioClient bean pointing to minio:9000
-- Create buckets: pnpn-listings-images, pnpn-listings-videos, 
-  pnpn-reviews-images, pnpn-avatars
+- MinioConfig: 
+      MinioClient bean pointing to minio:9000
+- Create buckets: 
+      pnpn-listings-images, pnpn-listings-videos, pnpn-reviews-images, pnpn-avatars
 - Test bucket creation on app startup
 - Use io.minio:minio SDK
 
 Output: MinioConfig.java + error handling.
 ```
 
-**Prompt 1.14: Listing Service Implementation**
+**Prompt 1.14: Listing Service Implementation ✅**
 ```
 Implement in pnpn-catalog-service:
-- ListingService: createListing (influencer only), searchListings, 
-  getListingById, updateListing (owner only), deleteListing, 
-  generatePresignedUrl
-- Circuit breaker: @CircuitBreaker(name = "user-service-cb") for getting 
-  influencer info
+- ListingService: 
+      createListing (influencer only),
+      searchListings,
+      getListingById,
+      updateListing (owner only),
+      deleteListing,
+      generatePresignedUrl
+- Circuit breaker: 
+      @CircuitBreaker(name = "user-service-cb") for getting influencer info
 - Cache invalidation on create/update/delete
 - View count increments via Redis (async)
-- Presigned URL generation: PUT method, 1-hour expiry
+- Presigned URL generation: 
+      PUT method, 1-hour expiry
 
 Output: ListingService.java with all CRUD + media handling.
 ```
@@ -294,12 +301,14 @@ Output: AuctionController.java + DTOs.
 **Prompt 1.20: Order & Cart Entities**
 ```
 Implement in pnpn-transaction-service:
-- Order JPA entity: id, listingId, buyerId, sellerId, amount, status, 
-  deliveryAddress, deliveryDate, trackingNumber, cancellationReason, 
-  createdAt, updatedAt
-- CartItem JPA entity: id, userId, listingId, quantity, addedAt
-- OrderRepository: findByBuyerId, findBySellerId, findByStatus
-- CartRepository: findByUserId, findByUserIdAndListingId
+- Order JPA entity: 
+      id, listingId, buyerId, sellerId, amount, status, deliveryAddress, deliveryDate, trackingNumber, cancellationReason, createdAt, updatedAt
+- CartItem JPA entity: 
+      id, userId, listingId, quantity, addedAt
+- OrderRepository: 
+      findByBuyerId, findBySellerId, findByStatus
+- CartRepository: 
+      findByUserId, findByUserIdAndListingId
 
 Output: Order.java + CartItem.java + repositories.
 ```

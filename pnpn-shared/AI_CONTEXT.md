@@ -40,12 +40,13 @@ Library module (no boot application — `spring-boot-maven-plugin` skip=true). A
 - `LogoutRequest` — userId, refreshToken
 
 **Catalog DTOs (`com.pnpn.shared.dto.catalog`):**
-- `CreateListingRequest` — @NotBlank title, description, @NotNull price, @NotBlank category, @NotNull condition
-- `ListingSearchCriteria` — category, condition, minPrice, maxPrice, keyword, page, size
+- `CreateListingRequest` — @NotBlank title, description, @NotNull price, @NotBlank category, @NotNull condition, mediaUrls
+- `ListingSearchCriteria` — query, category, minPrice, maxPrice, condition, status, influencerId, page, size, sortBy, sortDirection
 - `CreateAuctionRequest` — @NotNull listingId, @NotNull startPrice, reservePrice, @NotNull startTime, @NotNull endTime
-- `AuctionDetailResponse` — auction (AuctionDto), bids (List<BidDto>), timeLeftSeconds
-- `PlaceBidRequest` — @NotNull auctionId, @NotNull amount
-- `MediaPresignedUrlResponse` — url, method, expiresIn
+- `AuctionDetailResponse` — auction (AuctionDto), listing (ListingDto), bidHistory (List<BidDto>)
+- `PlaceBidRequest` — @NotNull auctionId, @NotNull buyerId, @NotNull amount
+- `MediaPresignedUrlResponse` — presignedUrl, mediaUrl
+- `ListingResponse` — listing (ListingDto), influencer (UserDto)
 
 **Transaction DTOs (`com.pnpn.shared.dto.transaction`):**
 - `AddToCartRequest` — @NotNull listingId, quantity
