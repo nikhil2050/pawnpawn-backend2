@@ -124,14 +124,11 @@
                   }
                 },
                 "url": {
-                  "raw": "http://localhost:9091/api/auth/login",
-                  "protocol": "http",
+                  "raw": "{{url_pnpn_user_service}}/auth/login",
                   "host": [
-                    "localhost"
+                    "{{url_pnpn_user_service}}"
                   ],
-                  "port": "9091",
                   "path": [
-                    "api",
                     "auth",
                     "login"
                   ]
@@ -184,14 +181,11 @@
                   }
                 },
                 "url": {
-                  "raw": "http://localhost:9091/api/auth/send-otp",
-                  "protocol": "http",
+                  "raw": "{{url_pnpn_user_service}}/auth/send-otp",
                   "host": [
-                    "localhost"
+                    "{{url_pnpn_user_service}}"
                   ],
-                  "port": "9091",
                   "path": [
-                    "api",
                     "auth",
                     "send-otp"
                   ]
@@ -220,14 +214,11 @@
                   }
                 },
                 "url": {
-                  "raw": "http://localhost:9091/api/auth/verify-otp",
-                  "protocol": "http",
+                  "raw": "{{url_pnpn_user_service}}/auth/verify-otp",
                   "host": [
-                    "localhost"
+                    "{{url_pnpn_user_service}}"
                   ],
-                  "port": "9091",
                   "path": [
-                    "api",
                     "auth",
                     "verify-otp"
                   ]
@@ -256,14 +247,11 @@
                   }
                 },
                 "url": {
-                  "raw": "http://localhost:9091/api/auth/refresh",
-                  "protocol": "http",
+                  "raw": "{{url_pnpn_user_service}}/auth/refresh",
                   "host": [
-                    "localhost"
+                    "{{url_pnpn_user_service}}"
                   ],
-                  "port": "9091",
                   "path": [
-                    "api",
                     "auth",
                     "refresh"
                   ]
@@ -292,14 +280,11 @@
                   }
                 },
                 "url": {
-                  "raw": "http://localhost:9091/api/auth/logout",
-                  "protocol": "http",
+                  "raw": "{{url_pnpn_user_service}}/auth/logout",
                   "host": [
-                    "localhost"
+                    "{{url_pnpn_user_service}}"
                   ],
-                  "port": "9091",
                   "path": [
-                    "api",
                     "auth",
                     "logout"
                   ]
@@ -320,19 +305,129 @@
                   }
                 ],
                 "url": {
-                  "raw": "http://localhost:9091/api/users/me",
-                  "protocol": "http",
+                  "raw": "{{url_pnpn_user_service}}/users/me",
                   "host": [
-                    "localhost"
+                    "{{url_pnpn_user_service}}"
                   ],
-                  "port": "9091",
                   "path": [
-                    "api",
                     "users",
                     "me"
                   ]
                 },
                 "description": "Generated from cURL: curl -s http://localhost:9091/api/users/me \\\n  -H \"Authorization: Bearer <access-token>\"\n"
+              },
+              "response": []
+            },
+            {
+              "name": "8./users/{id}",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{pnpn_auth_accessToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{url_pnpn_user_service}}/users/{{pnpn_auth_userId}}",
+                  "host": [
+                    "{{url_pnpn_user_service}}"
+                  ],
+                  "path": [
+                    "users",
+                    "{{pnpn_auth_userId}}"
+                  ]
+                },
+                "description": "##### **Get user by ID:**\n\nGenerated from cURL: curl -s [http://localhost:9091/api/users/](http://localhost:9091/api/users/)  \n\\-H \"Authorization: Bearer \""
+              },
+              "response": []
+            },
+            {
+              "name": "9./users/{id}/profile",
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{pnpn_auth_accessToken}}"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"name\": \"Britney Spears\",\n    \"bio\": \"Top Actress\",\n    \"profilePicUrl\": \"https://cdn.example.com/pic.jpg\",\n    \"verificationStatus\": \"PENDING\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{url_pnpn_user_service}}/users/{{pnpn_auth_userId}}/profile",
+                  "host": [
+                    "{{url_pnpn_user_service}}"
+                  ],
+                  "path": [
+                    "users",
+                    "{{pnpn_auth_userId}}",
+                    "profile"
+                  ]
+                },
+                "description": "##### Update profile (partial — only send fields you want to change)**:**\n\nGenerated from cURL: curl -s -X PUT [http://localhost:9091/api/users/](http://localhost:9091/api/users/)/profile  \n\\-H \"Content-Type: application/json\"  \n\\-H \"Authorization: Bearer \"  \n\\-d '{\"name\":\"New Name\",\"bio\":\"Updated bio\",\"profilePicUrl\":\"[https://cdn.example.com/pic.jpg\",\"verificationStatus\":\"PENDING\"}'](https://cdn.example.com/pic.jpg)"
+              },
+              "response": []
+            },
+            {
+              "name": "10./users/{id}/reputation",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{pnpn_auth_accessToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{url_pnpn_user_service}}/users/{{pnpn_auth_userId}}/reputation",
+                  "host": [
+                    "{{url_pnpn_user_service}}"
+                  ],
+                  "path": [
+                    "users",
+                    "{{pnpn_auth_userId}}",
+                    "reputation"
+                  ]
+                },
+                "description": "Generated from cURL: curl -s http://localhost:9091/api/users/<uuid>/reputation \\\n  -H \"Authorization: Bearer <access-token>\""
+              },
+              "response": []
+            },
+            {
+              "name": "11./users/{id}/followers/count",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{pnpn_auth_accessToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{url_pnpn_user_service}}/users/{{pnpn_auth_userId}}/followers/count",
+                  "host": [
+                    "{{url_pnpn_user_service}}"
+                  ],
+                  "path": [
+                    "users",
+                    "{{pnpn_auth_userId}}",
+                    "followers",
+                    "count"
+                  ]
+                },
+                "description": "Generated from cURL: curl -s http://localhost:9091/api/users/<uuid>/followers/count \\\n  -H \"Authorization: Bearer <access-token>\""
               },
               "response": []
             }
