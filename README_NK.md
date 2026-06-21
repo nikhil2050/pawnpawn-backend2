@@ -20,4 +20,14 @@ $ cd /Users/n/pawnpawn-backend2 && mvn test -pl pnpn-catalog-service -am -DfailI
 
 # Compile and run all new tests
 $ cd /Users/n/pawnpawn-backend2 && mvn test -pl pnpn-catalog-service,pnpn-shared -am 2>&1 | tail -60
+
+# Compile catalog service
+$ cd /Users/nikhilkshirsagar/AdvancedComputing/NKProjects/PawnPawnAntigravityProject/Projects/pawnpawn-backend2 && mvn compile -pl pnpn-catalog-service -q 2>&1 | tail -5
+(no output)
+
+# Full catalog-service tests
+$ cd /Users/nikhilkshirsagar/AdvancedComputing/NKProjects/PawnPawnAntigravityProject/Projects/pawnpawn-backend2 && mvn test -pl pnpn-catalog-service 2>&1 | grep -E "(Tests run|BUILD|FAILURE|ERROR|SUCCESS)" | tail -5
+
+# Run Minio tests
+$ cd /Users/nikhilkshirsagar/AdvancedComputing/NKProjects/PawnPawnAntigravityProject/Projects/pawnpawn-backend2 && mvn test -pl pnpn-catalog-service -Dtest="MinioConfigTest,MinioInitializerTest" 2>&1 | grep -E "(Tests run|BUILD|FAILURE|ERROR|SUCCESS|Compilation)" 
 ```

@@ -20,7 +20,7 @@ spring:
         format_sql: true
   data:
     redis:
-      host: ${REDIS_HOST:redis}
+      host: ${REDIS_HOST:localhost}
       port: ${REDIS_PORT:6379}
 
 minio:
@@ -41,6 +41,15 @@ resilience4j:
         minimumNumberOfCalls: 5
         failureRateThreshold: 50
         waitDurationInOpenState: 10s
+
+jwt:
+  secret: ${JWT_SECRET:default-dev-secret-key-at-least-48-chars-for-hs384-algorithm}
+  access-token-expiration: ${JWT_ACCESS_TOKEN_EXPIRATION:900000}
+
+services:
+  user-service:
+    api-key: ${USER_SERVICE_API_KEY:default-dev-user-service-key}
+    url: ${USER_SERVICE_URL:http://localhost:9091}
 
 management:
   endpoints:

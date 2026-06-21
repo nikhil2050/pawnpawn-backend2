@@ -29,10 +29,10 @@
 |----------------------------|------|-----------------------|--------------------------------------------------------------------------------|
 | `pnpn-gateway`             | 9090 | Minimal               | API routing, rate limiting, circuit breaker, JWT validation, fallback          |
 | `pnpn-user-service`        | 9091 | Fully implemented     | Register/login/OTP/refresh/logout, user profiles, JWT issuing                  |
-| `pnpn-catalog-service`     | 9092 | Partially implemented | Listings CRUD service, dynamic search, MinIO presigned URLs, auctions, bidding  |
+| `pnpn-catalog-service`     | 9092 | Partially implemented     | Listings CRUD (controller + service), dynamic search, MinIO presigned URLs, REST endpoints; auctions & bidding planned |
 | `pnpn-transaction-service` | 9093 | Skeleton only         | Orders lifecycle, cart management, payments (Razorpay/Stripe), reviews, resale |
 | `pnpn-messaging-service`   | 9094 | Skeleton only         | Real-time chat (WebSocket), notifications (FCM)                                |
-| `pnpn-shared`              | —    | Fully implemented     | Shared DTOs (40), enums (8), exceptions (2), global handler                    |
+| `pnpn-shared`              | —    | Fully implemented     | Shared DTOs (40), enums (8), exceptions (2), global handler, JwtUtil + JwtAuthenticationFilter, 8 test classes |
 
 ## Database Architecture
 

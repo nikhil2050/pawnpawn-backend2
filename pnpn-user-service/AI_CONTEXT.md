@@ -8,9 +8,8 @@ Port: `9091` | Status: **Fully implemented** | Tests: 9 test classes
 - `UserServiceApplication` — `@SpringBootApplication(scanBasePackages = {"com.pnpn.userservice", "com.pnpn.shared"})`
 
 ### `com.pnpn.userservice.config`
-- `JwtUtil` — HMAC-SHA256 JWT generation/parsing. Generates access tokens (15min TTL) with `sub`=userId, `userType` claim. Methods: `generateAccessToken(userId, userType)`, `parseToken(token)`, `getUserIdFromToken`, `getUserTypeFromToken`, `validateToken`, `isTokenExpired`
-- `JwtAuthenticationFilter` — `OncePerRequestFilter`. Extracts Bearer token from `Authorization` header, validates via JwtUtil, sets `SecurityContextHolder` with principal=userId(UUID), authority=`ROLE_{userType}`
-- `SecurityConfig` — Stateless JWT security: CSRF disabled, sessionless, `/api/auth/**` and `/actuator/**` public, all else authenticated, BCryptPasswordEncoder bean
+- `SecurityConfig` — Stateless JWT security: CSRF disabled, sessionless, `/api/auth/**` and `/actuator/**` public, all else authenticated, BCryptPasswordEncoder bean. Registers `JwtAuthenticationFilter` (from `pnpn-shared`) before `UsernamePasswordAuthenticationFilter`
+- `InternalApiKeyFilter` — `OncePerRequestFilter`. Validates `X-Internal-Api-Key` header against `services.internal-api-key` for inter-service calls
 
 ### `com.pnpn.userservice.entity`
 - `User` — JPA entity mapping `users` table. Fields: id(UUID), type(UserType), name, email, phone, passwordHash, profilePicUrl, bio, verified, verificationStatus, governmentIdUrl, selfieUrl, followerCount, reputationScore, totalReviews, fcmToken, createdAt, updatedAt
@@ -39,13 +38,13 @@ Port: `9091` | Status: **Fully implemented** | Tests: 9 test classes
 
 ### Test classes (`com.pnpn.userservice.*`)
 - `AuthServiceTest`, `UserServiceTest`, `AuthControllerTest`, `UserControllerTest`
-- `JwtUtilTest`, `JwtAuthenticationFilterTest`, `SecurityConfigTest`
-- `UserTest`, `UserRepositoryTest`
+- `SecurityConfigTest`, `UserTest`, `UserRepositoryTest`
+- `JwtUtilTest`, `JwtAuthenticationFilterTest` — integration tests using shared `JwtUtil` / `JwtAuthenticationFilter` from `pnpn-shared`
 
 ## Key Contracts
 
-- **Dependencies:** `pnpn-shared` (DTOs, enums, exceptions), PostgreSQL (users table), Redis (OTP + refresh tokens)
-- **JWT structure:** `{sub: userId, userType: "INFLUENCER"|"FOLLOWER"|"ADMIN", iat, exp}` — signed with HMAC-SHA256
+- **Dependencies:** `pnpn-shared` (DTOs, enums, exceptions, `JwtUtil`, `JwtAuthenticationFilter`), PostgreSQL (users table), Redis (OTP + refresh tokens)
+- **JWT structure:** `{sub: userId, userType: "INFLUENCER"|"FOLLOWER"|"ADMIN", iat, exp}` — signed with HMAC-SHA256. JWT utils live in `pnpn-shared`; `SecurityConfig` registers the shared `JwtAuthenticationFilter`
 - **Auth flow:** Register/Login → returns `{accessToken(15min), refreshToken(7d), user(UserDto)}`. Refresh token stored in Redis keyed by `refresh:{userId}`. OTP stored in Redis keyed by `otp:{email}`
 - **Self-service validation:** Profile update checks `currentUserId == targetUserId`
 - **Inter-service:** No direct calls to other services; other services call user-service via gateway to resolve user info

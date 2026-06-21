@@ -2335,7 +2335,7 @@ services:
       - postgres_data:/var/lib/postgresql/data
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -2351,7 +2351,7 @@ services:
     volumes:
       - redis_data:/data
     healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
+      test: [ "CMD", "redis-cli", "ping" ]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -2370,7 +2370,7 @@ services:
     volumes:
       - mongo_data:/data/db
     healthcheck:
-      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      test: [ "CMD", "mongosh", "--eval", "db.adminCommand('ping')" ]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -2391,7 +2391,7 @@ services:
       - minio_data:/data
     command: server /data --console-address ":9001"
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      test: [ "CMD", "curl", "-f", "http://localhost:9000/minio/health/live" ]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -2401,8 +2401,8 @@ services:
   # Spring Cloud Gateway
   gateway:
     build:
-      context: ./pnpn-gateway
-      dockerfile: Dockerfile
+      context: pnpn-gateway
+      dockerfile: pnpn-gateway/Dockerfile
     container_name: pnpn-gateway
     ports:
       - "8080:8080"
@@ -2424,8 +2424,8 @@ services:
   # User Service
   user-service:
     build:
-      context: ./pnpn-user-service
-      dockerfile: Dockerfile
+      context: pnpn-user-service
+      dockerfile: pnpn-user-service/Dockerfile
     container_name: pnpn-user-service
     ports:
       - "8001:8001"
@@ -2448,8 +2448,8 @@ services:
   # Catalog Service
   catalog-service:
     build:
-      context: ./pnpn-catalog-service
-      dockerfile: Dockerfile
+      context: pnpn-catalog-service
+      dockerfile: pnpn-catalog-service/Dockerfile
     container_name: pnpn-catalog-service
     ports:
       - "8002:8002"
@@ -2476,8 +2476,8 @@ services:
   # Transaction Service
   transaction-service:
     build:
-      context: ./pnpn-transaction-service
-      dockerfile: Dockerfile
+      context: pnpn-transaction-service
+      dockerfile: pnpn-transaction-service/Dockerfile
     container_name: pnpn-transaction-service
     ports:
       - "8003:8003"
@@ -2501,8 +2501,8 @@ services:
   # Messaging Service
   messaging-service:
     build:
-      context: ./pnpn-messaging-service
-      dockerfile: Dockerfile
+      context: pnpn-messaging-service
+      dockerfile: pnpn-messaging-service/Dockerfile
     container_name: pnpn-messaging-service
     ports:
       - "8004:8004"

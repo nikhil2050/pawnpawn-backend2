@@ -1,5 +1,7 @@
 package com.pnpn.userservice.config;
 
+import com.pnpn.shared.config.JwtAuthenticationFilter;
+import com.pnpn.shared.config.JwtUtil;
 import com.pnpn.shared.enums.UserType;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.http.HttpServletRequest;
@@ -55,7 +57,7 @@ class JwtAuthenticationFilterTest {
 
         when(request.getHeader("Authorization")).thenReturn("Bearer " + token);
 
-        filter.doFilterInternal(request, response, filterChain);
+        filter.doFilter(request, response, filterChain);
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         assertNotNull(auth);
@@ -72,7 +74,7 @@ class JwtAuthenticationFilterTest {
 
         when(request.getHeader("Authorization")).thenReturn("Bearer " + token);
 
-        filter.doFilterInternal(request, response, filterChain);
+        filter.doFilter(request, response, filterChain);
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         assertNotNull(auth);
@@ -83,7 +85,7 @@ class JwtAuthenticationFilterTest {
     void shouldNotSetAuthenticationWhenNoToken() throws Exception {
         when(request.getHeader("Authorization")).thenReturn(null);
 
-        filter.doFilterInternal(request, response, filterChain);
+        filter.doFilter(request, response, filterChain);
 
         assertNull(SecurityContextHolder.getContext().getAuthentication());
         verify(filterChain).doFilter(request, response);
@@ -93,7 +95,7 @@ class JwtAuthenticationFilterTest {
     void shouldNotSetAuthenticationWhenNotBearerToken() throws Exception {
         when(request.getHeader("Authorization")).thenReturn("Basic somebase64==");
 
-        filter.doFilterInternal(request, response, filterChain);
+        filter.doFilter(request, response, filterChain);
 
         assertNull(SecurityContextHolder.getContext().getAuthentication());
         verify(filterChain).doFilter(request, response);
@@ -109,7 +111,7 @@ class JwtAuthenticationFilterTest {
 
         when(request.getHeader("Authorization")).thenReturn("Bearer " + token);
 
-        expiredFilter.doFilterInternal(request, response, filterChain);
+        expiredFilter.doFilter(request, response, filterChain);
 
         assertNull(SecurityContextHolder.getContext().getAuthentication());
         verify(filterChain).doFilter(request, response);
@@ -119,7 +121,7 @@ class JwtAuthenticationFilterTest {
     void shouldNotSetAuthenticationForMalformedToken() throws Exception {
         when(request.getHeader("Authorization")).thenReturn("Bearer not-a-valid-jwt");
 
-        filter.doFilterInternal(request, response, filterChain);
+        filter.doFilter(request, response, filterChain);
 
         assertNull(SecurityContextHolder.getContext().getAuthentication());
         verify(filterChain).doFilter(request, response);
@@ -135,7 +137,7 @@ class JwtAuthenticationFilterTest {
         when(brokenJwt.getUserIdFromToken(anyString())).thenThrow(new RuntimeException("parse error"));
 
         SecurityContextHolder.getContext().setAuthentication(mock(Authentication.class));
-        brokenFilter.doFilterInternal(request, response, filterChain);
+        brokenFilter.doFilter(request, response, filterChain);
 
         assertNull(SecurityContextHolder.getContext().getAuthentication());
         verify(filterChain).doFilter(request, response);
@@ -145,7 +147,7 @@ class JwtAuthenticationFilterTest {
     void shouldContinueChainRegardlessOfAuth() throws Exception {
         when(request.getHeader("Authorization")).thenReturn("Bearer invalid.token.here");
 
-        filter.doFilterInternal(request, response, filterChain);
+        filter.doFilter(request, response, filterChain);
 
         verify(filterChain, times(1)).doFilter(request, response);
     }

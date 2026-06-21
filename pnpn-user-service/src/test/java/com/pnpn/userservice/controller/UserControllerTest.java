@@ -7,7 +7,7 @@ import com.pnpn.shared.enums.UserType;
 import com.pnpn.shared.enums.VerificationStatus;
 import com.pnpn.shared.exception.GlobalExceptionHandler;
 import com.pnpn.shared.exception.PnPnException;
-import com.pnpn.userservice.config.JwtUtil;
+import com.pnpn.shared.config.JwtUtil;
 import com.pnpn.userservice.service.UserService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;

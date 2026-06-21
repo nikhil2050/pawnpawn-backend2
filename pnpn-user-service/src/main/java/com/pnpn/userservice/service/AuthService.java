@@ -11,7 +11,7 @@ import com.pnpn.shared.dto.auth.RegisterRequest;
 import com.pnpn.shared.enums.VerificationStatus;
 import com.pnpn.shared.exception.PnPnException;
 
-import com.pnpn.userservice.config.JwtUtil;
+import com.pnpn.shared.config.JwtUtil;
 import com.pnpn.userservice.entity.User;
 import com.pnpn.userservice.repository.UserRepository;
 

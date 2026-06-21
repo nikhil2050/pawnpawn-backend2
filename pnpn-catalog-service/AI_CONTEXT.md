@@ -1,6 +1,6 @@
 # pnpn-catalog-service — Listings, Auctions & Media Storage
 
-Port: `9092` | Status: **Partially implemented** (entity, repo, MinIO, service layer done; controller layer planned) | Tests: 8 test classes (+1 in pnpn-shared)
+Port: `9092` | Status: **Partially implemented** (entity, repo, MinIO, service, controller done; auctions & bidding planned) | Tests: 8 test classes (+1 in pnpn-shared)
 
 ## Package Structure & Classes
 
@@ -8,8 +8,11 @@ Port: `9092` | Status: **Partially implemented** (entity, repo, MinIO, service l
 - `CatalogServiceApplication` — `@SpringBootApplication`, `@EnableCaching`, `@EnableAsync`, `@EnableScheduling`
 
 ### `com.pnpn.catalogservice.config`
-- `MinioConfig` — `@ConfigurationProperties(prefix="minio")`. Creates `MinioClient` bean pointing to `http://{minio.host}:9000`. On `@PostConstruct`, ensures 4 buckets exist:
+- `MinioProperties` — `@ConfigurationProperties(prefix="minio")`. Fields: url, accessKey, secretKey, buckets (`Map<String, String>`)
+- `MinioConfig` — Creates `MinioClient` bean from `MinioProperties`
+- `MinioInitializer` — `@EventListener(ApplicationReadyEvent.class)`. Ensures 4 buckets exist via `MinioClient.bucketExists()` + `makeBucket()`:
   - `pnpn-listings-images`, `pnpn-listings-videos`, `pnpn-reviews-images`, `pnpn-avatars`
+- `SecurityConfig` — Stateless JWT security, registers `JwtAuthenticationFilter` (from `pnpn-shared`) before `UsernamePasswordAuthenticationFilter`. `/api/listings` GET public, `/actuator/**` public, all else authenticated
 - `AppConfig` — exposes `RestTemplate` bean for inter-service HTTP calls
 
 ### `com.pnpn.catalogservice.client`
@@ -26,6 +29,9 @@ Port: `9092` | Status: **Partially implemented** (entity, repo, MinIO, service l
 - `ListingSearchCriteria` — POJO: category, condition, status, minPrice, maxPrice, influencerId, keyword
 - Planned: `AuctionRepository`, `BidRepository`, `FavouriteRepository`
 
+### `com.pnpn.catalogservice.controller`
+- `ListingController` — `@RestController @RequestMapping("/api/listings")`. Endpoints: POST `/`, GET `/`, GET `/{id}`, PUT `/{id}`, DELETE `/{id}`, POST `/{id}/media/presigned-url`. Uses `@PreAuthorize("hasRole('INFLUENCER')")` for write ops. Extracts `userId` from JWT principal
+
 ### `com.pnpn.catalogservice.service`
 - `ListingService` — createListing, searchListings, getListingById, updateListing, deleteListing, generatePresignedUrl. Features:
   - `@Cacheable("listings")` + `@CacheEvict({"listings", "listingsSearch"})` on writes — Redis-backed
@@ -33,16 +39,26 @@ Port: `9092` | Status: **Partially implemented** (entity, repo, MinIO, service l
   - `@CircuitBreaker` on user-service calls for influencer enrichment
   - Presigned URL: `Method.PUT`, 1-hour expiry via MinioClient
 
-### Planned (`controller/`, `dto/`)
-- `ListingController` — CRUD endpoints, `@PreAuthorize("hasRole('INFLUENCER')")` for write ops
+### Implemented REST Endpoints
+
+| Method | Path                                   | Auth       | Description              |
+|--------|----------------------------------------|------------|--------------------------|
+| POST   | /api/listings                          | INFLUENCER | Create listing           |
+| GET    | /api/listings                          | Public     | Search/paginate listings |
+| GET    | /api/listings/{id}                     | Public     | Get listing detail       |
+| PUT    | /api/listings/{id}                     | Owner      | Update listing           |
+| DELETE | /api/listings/{id}                     | Owner      | Delete listing           |
+| POST   | /api/listings/{id}/media/presigned-url | INFLUENCER | Get upload URL           |
+
+### Planned
 - `AuctionService` — createAuction, placeBid (atomic Redis ops), autoCloseExpiredAuctions, snipe extension (last 60s, max 3)
 - `AuctionController` — auction CRUD, bid placement, live auction WebSocket
 - `FavouriteService` — toggleFavourite, getFavourites (Redis cached)
 - WebSocket config for `/ws/auction/{auctionId}` — STOMP broadcast on bid
 
-### Test classes
+### Test classes (8 in catalog-service, 1 in pnpn-shared)
 - `ListingTest`, `ListingRepositoryTest`, `ListingSearchCriteriaTest`, `MinioConfigTest`
-- `AppConfigTest`, `UserServiceClientTest`, `ListingServiceTest`
+- `MinioInitializerTest`, `AppConfigTest`, `UserServiceClientTest`, `ListingServiceTest`
 - Shared module: `ListingResponseTest`
 
 ## Key Contracts
@@ -78,12 +94,6 @@ minio:
 
 | Method | Path                                   | Auth       | Description              |
 |--------|----------------------------------------|------------|--------------------------|
-| POST   | /api/listings                          | INFLUENCER | Create listing           |
-| GET    | /api/listings                          | Public     | Search/paginate listings |
-| GET    | /api/listings/{id}                     | Public     | Get listing detail       |
-| PUT    | /api/listings/{id}                     | Owner      | Update listing           |
-| DELETE | /api/listings/{id}                     | Owner      | Delete listing           |
-| POST   | /api/listings/{id}/media/presigned-url | INFLUENCER | Get upload URL           |
 | POST   | /api/auctions                          | INFLUENCER | Create auction           |
 | GET    | /api/auctions/live                     | Public     | Get live auctions        |
 | GET    | /api/auctions/{id}                     | Public     | Auction detail + bids    |

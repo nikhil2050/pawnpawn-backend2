@@ -8,7 +8,7 @@ import com.pnpn.shared.dto.auth.RegisterRequest;
 import com.pnpn.shared.enums.UserType;
 import com.pnpn.shared.enums.VerificationStatus;
 import com.pnpn.shared.exception.PnPnException;
-import com.pnpn.userservice.config.JwtUtil;
+import com.pnpn.shared.config.JwtUtil;
 import com.pnpn.shared.dto.auth.LogoutRequest;
 import com.pnpn.shared.dto.auth.RefreshTokenRequest;
 

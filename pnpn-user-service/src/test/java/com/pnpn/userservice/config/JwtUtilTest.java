@@ -1,5 +1,6 @@
 package com.pnpn.userservice.config;
 
+import com.pnpn.shared.config.JwtUtil;
 import com.pnpn.shared.enums.UserType;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -9,7 +10,6 @@ import org.junit.jupiter.api.Test;
 
 import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
-import java.util.Base64;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;

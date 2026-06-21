@@ -437,6 +437,325 @@
           "name": "2.pnpn-catalog-service",
           "item": [
             {
+              "name": "SELLER",
+              "item": [
+                {
+                  "name": "1. Create /listings",
+                  "request": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Authorization",
+                        "value": "Bearer {{pnpn_auth_accessToken}}"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n    \"title\": \"Black Jeans Pant\",\n    \"description\": \"Black printed regular jeans straight\",\n    \"category\": \"CLOTHING\",\n    \"price\": 4500.00,\n    \"condition\": \"USED\",\n    \"mediaUrls\": [\n        \"https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/2025/OCTOBER/8/21ZR50eD_00fe23bcdbea422eb9138d53411d7636.jpg\"\n    ]\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "http://localhost:9092/api/listings",
+                      "protocol": "http",
+                      "host": [
+                        "localhost"
+                      ],
+                      "port": "9092",
+                      "path": [
+                        "api",
+                        "listings"
+                      ]
+                    },
+                    "description": "# <u><b>Create Listing (SELLER):</b></u>\n\nGenerated from cURL: curl -X POST [http://localhost:9092/api/listings](http://localhost:9092/api/listings)  \n\\-H \"Content-Type: application/json\"  \n\\-H \"Authorization: Bearer \"  \n\\-d '{  \n\"title\": \"Vintage Guitar\",  \n\"description\": \"A rare 1965 Fender Stratocaster in sunburst finish.\",  \n\"category\": \"MUSIC\",  \n\"price\": 2500.00,  \n\"condition\": \"USED_GOOD\",  \n\"mediaUrls\": \\[\"\\[\\[\\[[https://example.com/guitar1.jpg\"]](https://example.com/guitar1.jpg)](https://example.com/guitar1.jpg)](https://example.com/guitar1.jpg)](https://example.com/guitar1.jpg)  \n}'"
+                  },
+                  "response": []
+                },
+                {
+                  "name": "5. Update /listings/{id}",
+                  "request": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"title\": \"Gray Jeans Pant\",\n  \"description\": \"Gray printed regular jeans straight\",\n  \"category\": \"CLOTHING\",\n  \"price\": 5500.00,\n  \"condition\": \"USED\",\n  \"mediaUrls\": [\"https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/2025/OCTOBER/8/21ZR50eD_00fe23bcdbea422eb9138d53411d7636.jpg\", \"https://example.com/guitar1.jpg\"]\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "http://localhost:9092/api/listings/6ca37d7b-9c4a-4f39-8748-705254b93ef3",
+                      "protocol": "http",
+                      "host": [
+                        "localhost"
+                      ],
+                      "port": "9092",
+                      "path": [
+                        "api",
+                        "listings",
+                        "6ca37d7b-9c4a-4f39-8748-705254b93ef3"
+                      ]
+                    },
+                    "description": "# <u>UPDATE Listing (SELLER)</u>\n\nGenerated from cURL: curl -X PUT [http://localhost:9092/api/listings/f47ac10b-58cc-4372-a567-0e02b2c3d479](http://localhost:9092/api/listings/f47ac10b-58cc-4372-a567-0e02b2c3d479)  \n\\-H \"Content-Type: application/json\"  \n\\-H \"Authorization: Bearer \"  \n\\-d '{  \n\"title\": \"Vintage Guitar (Price Reduced)\",  \n\"description\": \"A rare 1965 Fender Stratocaster — now cheaper!\",  \n\"category\": \"MUSIC\",  \n\"price\": 1999.99,  \n\"condition\": \"USED_GOOD\",  \n\"mediaUrls\": \\[\"[https://example.com/guitar1.jpg\"](https://example.com/guitar1.jpg), \"[https://example.com/guitar2.jpg\"]](https://example.com/guitar2.jpg)  \n}'"
+                  },
+                  "response": []
+                },
+                {
+                  "name": "6. Delete /listings/{id}",
+                  "request": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "key": "Authorization",
+                        "value": "Bearer {{pnpn_auth_accessToken}}"
+                      }
+                    ],
+                    "url": {
+                      "raw": "http://localhost:9092/api/listings/e40eea51-b799-4c0b-8311-f3cee44e0259",
+                      "protocol": "http",
+                      "host": [
+                        "localhost"
+                      ],
+                      "port": "9092",
+                      "path": [
+                        "api",
+                        "listings",
+                        "e40eea51-b799-4c0b-8311-f3cee44e0259"
+                      ]
+                    },
+                    "description": "Generated from cURL: curl -X DELETE http://localhost:9092/api/listings/f47ac10b-58cc-4372-a567-0e02b2c3d479 \\\n  -H \"Authorization: Bearer <token>\"\n"
+                  },
+                  "response": []
+                },
+                {
+                  "name": "7. /listings/{id}/media/presigned-url?bucketName=pnpn-listings-images&fileName=test.jpg",
+                  "request": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Authorization",
+                        "value": "Bearer {{pnpn_auth_accessToken}}",
+                        "type": "text"
+                      }
+                    ],
+                    "url": {
+                      "raw": "http://localhost:9092/api/listings/f47ac10b-58cc-4372-a567-0e02b2c3d479/media/presigned-url?bucketName=pnpn-listings-images&fileName=test.jpg",
+                      "protocol": "http",
+                      "host": [
+                        "localhost"
+                      ],
+                      "port": "9092",
+                      "path": [
+                        "api",
+                        "listings",
+                        "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+                        "media",
+                        "presigned-url"
+                      ],
+                      "query": [
+                        {
+                          "key": "bucketName",
+                          "value": "pnpn-listings-images"
+                        },
+                        {
+                          "key": "fileName",
+                          "value": "test.jpg"
+                        }
+                      ]
+                    },
+                    "description": "Generated from cURL: curl -X POST \"http://localhost:9092/api/listings/f47ac10b-58cc-4372-a567-0e02b2c3d479/media/presigned-url?bucketName=pnpn-listings-images&fileName=test.jpg\" \\\n  -H \"Authorization: Bearer <token>\""
+                  },
+                  "response": []
+                },
+                {
+                  "name": "8. Upload File minio",
+                  "request": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": " image/png",
+                        "type": "text"
+                      }
+                    ],
+                    "body": {
+                      "mode": "file",
+                      "file": {
+                        "src": "/Users/nikhilkshirsagar/Photography/StockPhotos/AIModel/hbKiara/otdr/Kiara_outdoor_002a_image_be2d3f6b.png"
+                      }
+                    },
+                    "url": {
+                      "raw": "http://localhost:9000/pnpn-listings-images/06d2ccdf-b1b0-4f11-a2b8-88f7f68c6b9f/f882004a-d0a4-4a17-b8ae-e442829b0f2b_test.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=minioadmin%2F20260620%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260620T115108Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=bbec2761cb2685441a237cf0ac79f1c0020337cee7358916c468fd503b1f6a82",
+                      "protocol": "http",
+                      "host": [
+                        "localhost"
+                      ],
+                      "port": "9000",
+                      "path": [
+                        "pnpn-listings-images",
+                        "06d2ccdf-b1b0-4f11-a2b8-88f7f68c6b9f",
+                        "f882004a-d0a4-4a17-b8ae-e442829b0f2b_test.jpg"
+                      ],
+                      "query": [
+                        {
+                          "key": "X-Amz-Algorithm",
+                          "value": "AWS4-HMAC-SHA256"
+                        },
+                        {
+                          "key": "X-Amz-Credential",
+                          "value": "minioadmin%2F20260620%2Fus-east-1%2Fs3%2Faws4_request"
+                        },
+                        {
+                          "key": "X-Amz-Date",
+                          "value": "20260620T115108Z"
+                        },
+                        {
+                          "key": "X-Amz-Expires",
+                          "value": "3600"
+                        },
+                        {
+                          "key": "X-Amz-SignedHeaders",
+                          "value": "host"
+                        },
+                        {
+                          "key": "X-Amz-Signature",
+                          "value": "bbec2761cb2685441a237cf0ac79f1c0020337cee7358916c468fd503b1f6a82"
+                        }
+                      ]
+                    },
+                    "description": "Generated from cURL: curl -X POST \"http://localhost:9092/api/listings/f47ac10b-58cc-4372-a567-0e02b2c3d479/media/presigned-url?bucketName=pnpn-listings-images&fileName=test.jpg\" \\\n  -H \"Authorization: Bearer <token>\""
+                  },
+                  "response": []
+                }
+              ]
+            },
+            {
+              "name": "BUYER",
+              "item": [
+                {
+                  "name": "2. /listings?filters1=yes",
+                  "request": {
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "http://localhost:9092/api/listings?page=0&size=10&sortBy=createdAt&sortDirection=desc",
+                      "protocol": "http",
+                      "host": [
+                        "localhost"
+                      ],
+                      "port": "9092",
+                      "path": [
+                        "api",
+                        "listings"
+                      ],
+                      "query": [
+                        {
+                          "key": "page",
+                          "value": "0"
+                        },
+                        {
+                          "key": "size",
+                          "value": "10"
+                        },
+                        {
+                          "key": "sortBy",
+                          "value": "createdAt"
+                        },
+                        {
+                          "key": "sortDirection",
+                          "value": "desc"
+                        }
+                      ]
+                    },
+                    "description": "# <u>Search Listings with Filters (BUYER)</u>\n\nGenerated from cURL: curl -X GET \"[http://localhost:9092/api/listings?page=0&amp;size=10&amp;sortBy=createdAt&amp;sortDirection=desc\"](http://localhost:9092/api/listings?page=0&size=10&sortBy=createdAt&sortDirection=desc)"
+                  },
+                  "response": []
+                },
+                {
+                  "name": "3. /listings?filters2=yes",
+                  "request": {
+                    "auth": {
+                      "type": "noauth"
+                    },
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "http://localhost:9092/api/listings?category=CLOTHING&minPrice=4000&page=0&size=5",
+                      "protocol": "http",
+                      "host": [
+                        "localhost"
+                      ],
+                      "port": "9092",
+                      "path": [
+                        "api",
+                        "listings"
+                      ],
+                      "query": [
+                        {
+                          "key": "category",
+                          "value": "CLOTHING"
+                        },
+                        {
+                          "key": "minPrice",
+                          "value": "4000"
+                        },
+                        {
+                          "key": "page",
+                          "value": "0"
+                        },
+                        {
+                          "key": "size",
+                          "value": "5"
+                        }
+                      ]
+                    },
+                    "description": "# <u>Search Listings with Filters (BUYER)</u>"
+                  },
+                  "response": []
+                },
+                {
+                  "name": "4. /listings/{id}",
+                  "request": {
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "http://localhost:9092/api/listings/dccec7b3-21aa-4e23-b642-0d8de6fd6d24",
+                      "protocol": "http",
+                      "host": [
+                        "localhost"
+                      ],
+                      "port": "9092",
+                      "path": [
+                        "api",
+                        "listings",
+                        "dccec7b3-21aa-4e23-b642-0d8de6fd6d24"
+                      ]
+                    },
+                    "description": "# <u>Get Listing by ID (BUYER)</u>"
+                  },
+                  "response": []
+                }
+              ]
+            },
+            {
               "name": "Health",
               "protocolProfileBehavior": {
                 "disableBodyPruning": true

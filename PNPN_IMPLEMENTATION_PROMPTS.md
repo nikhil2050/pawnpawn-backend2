@@ -220,17 +220,24 @@ Implement in pnpn-catalog-service:
 Output: ListingService.java with all CRUD + media handling.
 ```
 
-**Prompt 1.15: Listing Controller & DTOs**
+**Prompt 1.15: Listing Controller & DTO ✅**
 ```
 Implement in pnpn-catalog-service:
-- ListingController: POST /listings, GET /listings (paginated + filters), 
-  GET /listings/{id}, PUT /listings/{id}, DELETE /listings/{id}, 
-  POST /listings/{id}/media/presigned-url
-- Request DTOs: CreateListingRequest, ListingSearchCriteria
-- Response DTO: ListingResponse (include influencer info), 
-  MediaPresignedUrlResponse
+- ListingController: 
+        POST /listings, 
+        GET /listings (paginated + filters), 
+        GET /listings/{id}, 
+        PUT /listings/{id}, 
+        DELETE /listings/{id}, 
+        POST /listings/{id}/media/presigned-url
+- Request DTOs: 
+        CreateListingRequest, ListingSearchCriteria
+- Response DTO: 
+        ListingResponse (include influencer info), 
+        MediaPresignedUrlResponse
 - Add @PreAuthorize("hasRole('INFLUENCER')") for creation/update/delete
-- Support query params: category, minPrice, maxPrice, condition, page, size
+- Support query params: 
+        category, minPrice, maxPrice, condition, page, size
 
 Output: ListingController.java + DTOs with full validation.
 ```

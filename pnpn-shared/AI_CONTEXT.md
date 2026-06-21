@@ -4,6 +4,10 @@ Library module (no boot application — `spring-boot-maven-plugin` skip=true). A
 
 ## Package Structure & Classes
 
+### Config (`com.pnpn.shared.config`)
+- `JwtUtil` — HMAC-SHA256 JWT generation/parsing/validation. Reads `jwt.secret` + `jwt.access-token-expiration` from config. Methods: `generateAccessToken`, `parseToken`, `getUserIdFromToken`, `getUserTypeFromToken`, `validateToken`, `isTokenExpired`
+- `JwtAuthenticationFilter` — `OncePerRequestFilter`. Extracts Bearer token from `Authorization` header, validates via `JwtUtil`, sets `SecurityContextHolder` with principal=userId(UUID), authority=`ROLE_{userType}`
+
 ### Enums (`com.pnpn.shared.enums`)
 - `UserType` — INFLUENCER, FOLLOWER, ADMIN
 - `ListingCondition` — NEW, LIKE_NEW, GENTLY_USED, USED, FAIR
@@ -73,11 +77,20 @@ Library module (no boot application — `spring-boot-maven-plugin` skip=true). A
 ## Key Contracts
 
 - Every service depends on `com.pnpn:pnpn-shared:1.0.0-SNAPSHOT` via Maven
-- `GlobalExceptionHandler` is picked up automatically by any service scanning `com.pnpn.shared` via `@SpringBootApplication(scanBasePackages = {"com.pnpn.xxx", "com.pnpn.shared"})`
+- `GlobalExceptionHandler`, `JwtUtil`, `JwtAuthenticationFilter` are picked up automatically by any service scanning `com.pnpn.shared` via `@SpringBootApplication(scanBasePackages = {"com.pnpn.xxx", "com.pnpn.shared"})`
 - All DTOs use `@Data`, `@Builder`, `@NoArgsConstructor`, `@AllArgsConstructor` from Lombok
 - Validation annotations (`@NotNull`, `@NotBlank`, `@Email`, `@Min`, `@Max`) on request DTOs
 
+## Test classes (8)
+- `JwtUtilTest` (15 tests) — token generation, parsing, validation, expiry, malformed/signature edge cases
+- `JwtAuthenticationFilterTest` (14 tests) — all user type roles, missing/invalid/expired tokens, exception handling
+- `DtoSerializationTest` — JSON serde for all 40 DTOs across all domains
+- `ErrorResponseTest` — builder, JSON serde, equals/hashCode
+- `ListingResponseTest` — builder, JSON serde, setters
+- `EnumsTest` — values, ordinals, name/tostring for all 8 enums
+- `GlobalExceptionHandlerTest` — PnPnException, validation errors, generic exceptions
+- `PnPnExceptionTest` — all 4 constructor variants
+
 ## Configuration
 
-- Spring Boot Starter Validation, Starter Web (for GlobalExceptionHandler), Jackson
-- No database, no Redis, no security — pure library
+- Spring Boot Starter Validation, Starter Web, Starter Security (for JwtAuthenticationFilter), Jackson

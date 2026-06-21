@@ -2,14 +2,18 @@ package com.pnpn.userservice.config;
 
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import com.pnpn.shared.config.JwtAuthenticationFilter;
 
 /**
  * Spring Security configuration for the user service.
@@ -34,10 +38,22 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
  */
 @Configuration
 @EnableWebSecurity
+/**
+ * Enables method-level security annotations (@PreAuthorize, @Secured, @RolesAllowed) across the service.
+ * <p>
+ * While this service currently authorises requests via HttpSecurity request matchers,
+ * future endpoints may use @PreAuthorize for fine-grained role checks.
+ * This annotation ensures consistency with pnpn-catalog-service where role enforcement on write operations
+ * is handled at the controller level.
+ */
+@EnableMethodSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
+
+    @Value("${services.user-service.api-key}")
+    private String userServiceApiKey;
 
     /**
      * Defines the security filter chain for all HTTP requests.
@@ -63,6 +79,7 @@ public class SecurityConfig {
             .exceptionHandling(ex -> ex
                 .authenticationEntryPoint((request, response, authException) ->
                     response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized")))
+            .addFilterBefore(new InternalApiKeyFilter(userServiceApiKey), UsernamePasswordAuthenticationFilter.class)
             .addFilterBefore(jwtAuthenticationFilter,
                 UsernamePasswordAuthenticationFilter.class);
 

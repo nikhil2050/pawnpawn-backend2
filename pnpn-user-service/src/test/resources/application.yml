@@ -13,7 +13,11 @@ spring:
       - org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration
       - org.springframework.boot.autoconfigure.data.redis.RedisRepositoriesAutoConfiguration
 
+services:
+  user-service:
+    api-key: test-user-service-api-key
+
 jwt:
-  secret: test-secret-key-change-in-production
+  secret: test-secret-key-at-least-48-chars-for-hs384-algorithm-in-tests
   access-token-expiration: 900000
   refresh-token-expiration: 604800000

@@ -24,9 +24,13 @@ spring:
       port: ${REDIS_PORT:6379}
 
 jwt:
-  secret: ${JWT_SECRET:default-dev-secret-key-change-in-production}
+  secret: ${JWT_SECRET:default-dev-secret-key-at-least-48-chars-for-hs384-algorithm}
   access-token-expiration: 900000
   refresh-token-expiration: 604800000
+
+services:
+  user-service:
+    api-key: ${USER_SERVICE_API_KEY:default-dev-user-service-key}
 
 resilience4j:
   circuitbreaker:
