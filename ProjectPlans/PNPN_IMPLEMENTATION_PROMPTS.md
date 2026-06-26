@@ -305,7 +305,7 @@ Output: AuctionController.java + DTOs.
 
 ### Week 6-7: Transaction Service (Orders, Cart, Payments)
 
-**Prompt 1.20: Order & Cart Entities**
+**Prompt 1.20: Order & Cart Entities **
 ```
 Implement in pnpn-transaction-service:
 - Order JPA entity: 

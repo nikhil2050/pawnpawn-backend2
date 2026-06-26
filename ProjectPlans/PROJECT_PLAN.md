@@ -26,21 +26,21 @@ influencers auction wardrobe items to their followers in real time.
 
 ## 2. Tech Stack
 
-| Layer           | Technology                                  |
-| --------------- | ------------------------------------------- |
-| Language        | Java 17                                     |
-| Framework       | Spring Boot 3.x                             |
-| Build Tool      | Maven                                       |
-| API Gateway     | Spring Cloud Gateway                        |
-| Inter-service   | Kafka / RabbitMQ (event-driven)             |
-| Database (core) | PostgreSQL                                  |
-| Database (chat) | MongoDB                                     |
-| Cache           | Redis                                       |
-| Object Storage  | MinIO (dev) → AWS S3 / GCS (prod)           |
-| Container       | Docker / Docker Compose                     |
-| Orchestration   | (TBD — Kubernetes if scaling demands it)    |
-| CI/CD           | (TBD — GitHub Actions / Jenkins)            |
-| API Docs        | OpenAPI / Swagger                           |
+| Layer           | Technology                                           |
+| --------------- |------------------------------------------------------|
+| Language        | Java 17                                              |
+| Framework       | Spring Boot 3.x                                      |
+| Build Tool      | Maven                                                |
+| API Gateway     | Spring Cloud Gateway                                 |
+| Inter-service   | Kafka / RabbitMQ (event-driven)                      |
+| Database (core) | PostgreSQL                                           |
+| Database (chat) | MongoDB                                              |
+| Cache           | Redis                                                |
+| Object Storage  | MinIO (dev) → AWS S3 / GCS (prod)                    |
+| Container       | Docker / Docker Compose                              |
+| Orchestration   | (TBD — Kubernetes if scaling demands it)             |
+| CI/CD           | (TBD — GitHub Actions / Jenkins)                     |
+| API Docs        | OpenAPI / Swagger                                    |
 | Testing         | JUnit, Mockito, REST Assured, (TBD - Testcontainers) |
 
 ---
@@ -50,20 +50,20 @@ influencers auction wardrobe items to their followers in real time.
 All services run in Docker containers orchestrated by Docker Compose for local development and single-machine deployment.
 All containers of services are categorized under the container - project-pnpn-ag2 for easy grouping and management.
 
-| Service |  Rationale |
-|---------|------------|
-| pnpn-user-service | Auth + User are tightly coupled; every operation starts with identifying the user. Verification & reputation are user attributes. |
-| pnpn-catalog-service | Listings + Auctions + Bidding are all product domain; scaling independently from transactions. |
+| Service                  | Rationale                                                                                                                                                                   |
+|--------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| pnpn-user-service        | Auth + User are tightly coupled; every operation starts with identifying the user. Verification & reputation are user attributes.                                           |
+| pnpn-catalog-service     | Listings + Auctions + Bidding are all product domain; scaling independently from transactions.                                                                              |
 | pnpn-transaction-service | Orders + Reviews + Resale form the commerce transaction flow. A review is tied to an order; resale creates a new order. Single responsibility: "manage commerce lifecycle." |
-| pnpn-messaging-service | Chat + Notifications are both async communication channels. Both benefit from the same infrastructure (WebSocket, async workers, event-driven).
+| pnpn-messaging-service   | Chat + Notifications are both async communication channels. Both benefit from the same infrastructure (WebSocket, async workers, event-driven).                             
 
 ### Database Allocation (Clean Boundaries)
-| Service | Primary DB | Secondary |
-|---------|------------|-----------|
-| pnpn-user-service | PostgreSQL (users, followers) | Redis (session cache) |
-| pnpn-catalog-service | PostgreSQL (listings, auctions, bids) | Redis (live auction state, bid queue) |
-| pnpn-transaction-service | PostgreSQL (orders, reviews, resale) | — | 
-| pnpn-messaging-service | MongoDB (chat messages) | Redis (unread counts, typing indicators) |
+| Service                  | Primary DB                            | Secondary                                |
+|--------------------------|---------------------------------------|------------------------------------------|
+| pnpn-user-service        | PostgreSQL (users, followers)         | Redis (session cache)                    |
+| pnpn-catalog-service     | PostgreSQL (listings, auctions, bids) | Redis (live auction state, bid queue)    |
+| pnpn-transaction-service | PostgreSQL (orders, reviews, resale)  | —                                        | 
+| pnpn-messaging-service   | MongoDB (chat messages)               | Redis (unread counts, typing indicators) |
 
 ### Current Service Dependencies & Call Graph
 ```
@@ -496,38 +496,38 @@ Security audit
 
 ## 11. Task Tracker
 
-| #  | Task                              | Service         | Milestone | Status    |
-| -- | --------------------------------- | --------------- | --------- | --------- |
-| 1  | Init Maven multi-module project   | All             | M1        | Pending   |
-| 2  | Docker Compose config             | Infra           | M1        | Pending   |
-| 3  | Spring Cloud Gateway setup        | pawn-gateway    | M1        | Pending   |
-| 4  | Shared library (DTOs, exceptions) | common          | M1        | Pending   |
-| 5  | Auth: register/login              | pawn-auth       | M2        | Pending   |
-| 6  | Auth: JWT & refresh tokens        | pawn-auth       | M2        | Pending   |
-| 7  | Auth: OAuth2 (Google, Insta)      | pawn-auth       | M2        | Pending   |
-| 8  | User: profile CRUD                | pawn-user       | M2        | Pending   |
-| 9  | User: follow system               | pawn-user       | M2        | Pending   |
-| 10 | Listing: CRUD                     | pawn-listing    | M3        | Pending   |
-| 11 | Listing: search/filter            | pawn-listing    | M3        | Pending   |
-| 12 | Media: upload → MinIO             | pawn-listing    | M3        | Pending   |
-| 13 | Bidding: WebSocket setup          | pawn-bidding    | M4        | Pending   |
-| 14 | Bidding: auction lifecycle        | pawn-bidding    | M4        | Pending   |
-| 15 | Bidding: bid engine + validation  | pawn-bidding    | M4        | Pending   |
-| 16 | Bidding: time extension logic     | pawn-bidding    | M4        | Pending   |
-| 17 | Bidding: Redis bid state          | pawn-bidding    | M4        | Pending   |
-| 18 | Order: checkout flow              | pawn-order      | M5        | Pending   |
-| 19 | Payment: Stripe integration       | pawn-order      | M5        | Pending   |
-| 20 | Payment: Razorpay integration     | pawn-order      | M5        | Pending   |
-| 21 | Payment: escrow/hold              | pawn-order      | M5        | Pending   |
-| 22 | Chat: MongoDB schema              | pawn-chat       | M6        | Pending   |
-| 23 | Chat: WebSocket messaging         | pawn-chat       | M6        | Pending   |
-| 24 | Notification: Kafka consumer      | pawn-notif      | M6        | Pending   |
-| 25 | Notification: push + email        | pawn-notif      | M6        | Pending   |
-| 26 | Admin: moderation endpoints       | pawn-gateway    | M7        | Pending   |
-| 27 | Admin: dashboard metrics          | all             | M7        | Pending   |
-| 28 | K8s deployment manifests         | Infra           | M8        | Pending   |
-| 29 | Monitoring & tracing             | Infra           | M8        | Pending   |
-| 30 | Load testing + security audit    | All             | M8        | Pending   |
+| #  | Task                               | Service         | Milestone | Status    |
+| -- |------------------------------------| --------------- | --------- | --------- |
+| 1  | Init Maven multi-module project    | All             | M1        | Pending   |
+| 2  | Docker Compose config              | Infra           | M1        | Pending   |
+| 3  | Spring Cloud Gateway setup         | pawn-gateway    | M1        | Pending   |
+| 4  | Shared library (DTOs, exceptions)  | common          | M1        | Pending   |
+| 5  | Auth: register/login               | pawn-auth       | M2        | Pending   |
+| 6  | Auth: JWT & refresh tokens         | pawn-auth       | M2        | Pending   |
+| 7  | Auth: OAuth2 (Google, Insta)       | pawn-auth       | M2        | Pending   |
+| 8  | User: profile CRUD                 | pawn-user       | M2        | Pending   |
+| 9  | User: follow system                | pawn-user       | M2        | Pending   |
+| 10 | Listing: CRUD                      | pawn-listing    | M3        | Pending   |
+| 11 | Listing: search/filter             | pawn-listing    | M3        | Pending   |
+| 12 | Media: upload → MinIO              | pawn-listing    | M3        | Pending   |
+| 13 | Bidding: WebSocket setup           | pawn-bidding    | M4        | Pending   |
+| 14 | Bidding: auction lifecycle         | pawn-bidding    | M4        | Pending   |
+| 15 | Bidding: bid engine + validation   | pawn-bidding    | M4        | Pending   |
+| 16 | Bidding: time extension logic      | pawn-bidding    | M4        | Pending   |
+| 17 | Bidding: Redis bid state           | pawn-bidding    | M4        | Pending   |
+| 18 | Order: checkout flow               | pawn-order      | M5        | Pending   |
+| 19 | Payment: Stripe integration        | pawn-order      | M5        | Pending   |
+| 20 | Payment: Razorpay integration      | pawn-order      | M5        | Pending   |
+| 21 | Payment: escrow/hold               | pawn-order      | M5        | Pending   |
+| 22 | Chat: MongoDB schema               | pawn-chat       | M6        | Pending   |
+| 23 | Chat: WebSocket messaging          | pawn-chat       | M6        | Pending   |
+| 24 | Notification: Kafka consumer       | pawn-notif      | M6        | Pending   |
+| 25 | Notification: push + email         | pawn-notif      | M6        | Pending   |
+| 26 | Admin: moderation endpoints        | pawn-gateway    | M7        | Pending   |
+| 27 | Admin: dashboard metrics           | all             | M7        | Pending   |
+| 28 | K8s deployment manifests           | Infra           | M8        | Pending   |
+| 29 | Monitoring & tracing               | Infra           | M8        | Pending   |
+| 30 | Load testing + security audit      | All             | M8        | Pending   |
 
 ---
 

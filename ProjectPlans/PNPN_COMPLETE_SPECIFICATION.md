@@ -2401,7 +2401,7 @@ services:
   # Spring Cloud Gateway
   gateway:
     build:
-      context: pnpn-gateway
+      context: ../pnpn-gateway
       dockerfile: pnpn-gateway/Dockerfile
     container_name: pnpn-gateway
     ports:
@@ -2424,7 +2424,7 @@ services:
   # User Service
   user-service:
     build:
-      context: pnpn-user-service
+      context: ../pnpn-user-service
       dockerfile: pnpn-user-service/Dockerfile
     container_name: pnpn-user-service
     ports:
@@ -2448,7 +2448,7 @@ services:
   # Catalog Service
   catalog-service:
     build:
-      context: pnpn-catalog-service
+      context: ../pnpn-catalog-service
       dockerfile: pnpn-catalog-service/Dockerfile
     container_name: pnpn-catalog-service
     ports:
@@ -2476,7 +2476,7 @@ services:
   # Transaction Service
   transaction-service:
     build:
-      context: pnpn-transaction-service
+      context: ../pnpn-transaction-service
       dockerfile: pnpn-transaction-service/Dockerfile
     container_name: pnpn-transaction-service
     ports:
@@ -2501,7 +2501,7 @@ services:
   # Messaging Service
   messaging-service:
     build:
-      context: pnpn-messaging-service
+      context: ../pnpn-messaging-service
       dockerfile: pnpn-messaging-service/Dockerfile
     container_name: pnpn-messaging-service
     ports:
